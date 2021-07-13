@@ -1,0 +1,15 @@
+
+<div class="list-data" *ngIf="postData.length>0">
+    <div>List of users</div>
+    <div class="list" *ngFor="let item of postData">
+        <p>Name: {{item.firstName}}  {{item.lastName}}</p>
+        <p>email: {{item.email}}</p>
+        <p>phone: {{item.phone}}</p>
+        <div class="crud-button">
+            <button [routerLink]="['/edit', item.id]">EDIT</button>
+            <button (click)="onDelete(item.id)">DELETE</button>
+        </div>
+    </div>
+
+</div>
+<p class="text-center" *ngIf="postData.length<=0">No post added</p>

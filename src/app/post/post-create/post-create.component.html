@@ -1,0 +1,45 @@
+
+
+<form class="form-group" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+    <div class="form-control"><input type="text" placeholder="firstName*" formControlName="firstName">
+        <div [hidden]="postForm.get('firstName').untouched">
+            <span class="error-msg" *ngIf="postForm.get('firstName').errors?.required">
+                Please enter firstName</span>
+        </div>
+    </div>
+
+    <div class="form-control"><input type="text" placeholder="lastName*" formControlName="lastName">
+        <div [hidden]="postForm.get('lastName').untouched">
+            <span class="error-msg" *ngIf="postForm.get('lastName').errors?.required">
+                Please enter lastName</span>
+            </div>
+    </div>
+
+    <div class="form-control"><input type="email" placeholder="email*" formControlName="email"
+        >
+        <div [hidden]="postForm.get('email').untouched">
+            <span class="error-msg" *ngIf="postForm.get('email').errors?.required">
+                Please enter email</span>
+            </div>
+    </div>
+
+    <div class="form-control phone-data">
+        <span>
+            <input type="text" placeholder="0123456789" formControlName="phone" maxlength="10" 
+            pattern="[0-9]{10}">
+        </span>
+        <i class="fa fa-info-circle tooltip">
+            <span class="tooltiptext">Please enter phone of 10 digits</span>
+        </i>
+        <div [hidden]="postForm.get('phone').untouched">
+            <span class="error-msg" *ngIf="postForm.get('phone').errors?.required">
+                Please enter phone of 10 digits
+            </span>
+        </div>
+    </div>
+
+    <span class="error-msg" *ngIf="showError">
+        Please enter enter appropriate detail
+    </span>
+    <div class="form-control"><button class="pointer" type="submit">Submit</button></div>
+</form>

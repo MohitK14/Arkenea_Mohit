@@ -20,3 +20,11 @@
 .crud-button button{
     cursor: pointer;
 }
+
+.post-image{
+    width: 100%;
+}
+
+.post-image img{
+    width: 30%;
+}

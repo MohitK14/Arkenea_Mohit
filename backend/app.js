@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser= require('body-parser');
-const mongoose= require('mongoose')
+const mongoose= require('mongoose');
+const path= require("path");
 
 const app = express();
 const userRoutes = require('./routes/routes')
@@ -29,6 +30,6 @@ mongoose.connect("mongodb+srv://mohit:heqGNgu3D0yDkDSg@cluster0.urr3c.mongodb.ne
         next();
     });
 
-
+    app.use("/images", express.static(path.join("backend/images")))
     app.use(userRoutes);
     module.exports= app;

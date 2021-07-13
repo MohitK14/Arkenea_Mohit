@@ -3,5 +3,6 @@ export interface Post {
     firstName: string,
     lastName: string,
     email: string,
-    phone: number
+    phone: string,
+    imagePath: string
 }

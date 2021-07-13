@@ -18,7 +18,8 @@ export class PostCreateComponent implements OnInit {
   emailPattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/";
   mode= "create";
   userId;
-  post: Post
+  post: Post;
+  imagePreview;
 
   constructor(private formBuilder: FormBuilder, 
               private postService: PostsService, 
@@ -31,13 +32,15 @@ export class PostCreateComponent implements OnInit {
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       phone: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+      image: new FormControl('', [Validators.required]),
     });
 
     this.route.paramMap.subscribe((paramMap)=>{
       if(paramMap.has('userId')){
         this.mode= "edit";
         this.userId= paramMap.get('userId');
-        this.postService.getUserWitId(this.userId).subscribe(data=>{
+        this.postService.getUserWithId(this.userId).subscribe(data=>{
+          console.log(data);
           this.userData(data);
         });
       }
@@ -53,8 +56,23 @@ export class PostCreateComponent implements OnInit {
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone,
-      email: data.email
+      email: data.email,
+      image: data.imagePath
     });
+  }
+
+  imageEvent(event){
+    console.log(event);
+    const file= (event.target as HTMLInputElement).files[0];
+    this.postForm.patchValue({image: file});
+    this.postForm.get('email').updateValueAndValidity();
+
+    const reader= new FileReader();
+    reader.onload= ()=>{
+      this.imagePreview= reader.result
+    }
+    reader.readAsDataURL(file);
+    console.log(this.postForm);
   }
 
   onSubmit(){
@@ -69,11 +87,13 @@ export class PostCreateComponent implements OnInit {
       firstName: this.postForm.value.firstName,
       lastName: this.postForm.value.lastName,
       email: this.postForm.value.email,
-      phone: this.postForm.value.phone
+      phone: this.postForm.value.phone,
+      image: this.postForm.value.image
+
     }
     if(this.mode=="create"){
       console.log(this.mode);
-      this.postService.addUser(tempData.firstName, tempData.lastName, tempData.email, tempData.phone);
+      this.postService.addUser(tempData.firstName, tempData.lastName, tempData.email, tempData.phone, tempData.image);
     }
     else{
       console.log(this.mode);

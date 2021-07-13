@@ -20,11 +20,13 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postService.getUsers();
       this.postDataSubscription= this.postService.getPostsUpdateListener().subscribe((posts: Post[])=>{
                                   this.postData= posts;
+                                  console.log(this.postData);
                                 });
+                                
     }
 
     onDelete(data){
-      this.postService.deletePost(data);
+      this.postService.deleteUser(data);
     }
 
     // onEdit(data){

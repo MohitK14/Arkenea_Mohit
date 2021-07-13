@@ -6,7 +6,7 @@
         <p>email: {{item.email}}</p>
         <p>phone: {{item.phone}}</p>
         <div class="post-image">
-            <img  [src]="item.imagePath"/>
+            <img  [src]="item.imagePath">
         </div>
         <div class="crud-button">
             <button [routerLink]="['/edit', item.id]">EDIT</button>

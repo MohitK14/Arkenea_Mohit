@@ -51,7 +51,7 @@ router.post('/api/createUser', multer({storage: storage}).single("image") , asyn
         })
     }
     else{
-        res.status(400).json({
+        res.status(500).json({
             message:"User with email id already exist"
         })
     }
@@ -88,12 +88,12 @@ router.get('/api/user/:id', async(req, res, next)=>{
 router.put('/api/user/:id', multer({storage: storage}).single("image") , async(req, res, next)=>{
 
     let imagePath = req.body.imagePath;
-    if(req.file){
+    
         const url = req.protocol+'://'+req.get("host");
         imagePath= url + "/images/" +req.file.filename;
-    }
+    
     const post= new Post({
-        _id: req.params.id,
+        _id: req.body.id,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,

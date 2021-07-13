@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Post } from '../post.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+const blb    = new Blob(["Lorem ipsum sit"], {type: "text/plain"});
+const reader = new FileReader();
 
 @Component({
   selector: 'app-post-create',
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
 
   postForm: FormGroup;
   submitted= false;
@@ -20,6 +24,8 @@ export class PostCreateComponent implements OnInit {
   userId;
   post: Post;
   imagePreview;
+  emailCheckStatus: Subscription;
+  emailError= false;
 
   constructor(private formBuilder: FormBuilder, 
               private postService: PostsService, 
@@ -47,6 +53,14 @@ export class PostCreateComponent implements OnInit {
       else{
         this.mode= "create";
         this.userId= null;
+      }
+    })
+
+    this.emailCheckStatus= this.postService.getPostsUpdateListener().subscribe(data=>{
+      
+      if(data){
+        console.log(data);
+        this.emailError= true;
       }
     })
   }
@@ -97,6 +111,7 @@ export class PostCreateComponent implements OnInit {
     }
     else{
       console.log(this.mode);
+      
       this.postService.updateUser(tempData, this.userId);
     }
     
@@ -104,4 +119,7 @@ export class PostCreateComponent implements OnInit {
     this.router.navigate(["/users-list"]);
   }
 
+  ngOnDestroy(){
+    this.emailCheckStatus.unsubscribe();
+  }
 }

@@ -5,12 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import * as EventEmitter from 'events';
 
 @Injectable({providedIn: 'root'})
 
 export class PostsService{
     public posts:Post[]=[];
-    public postUpdated= new Subject();
+    public postUpdated: any= new Subject();
 
     constructor(private http: HttpClient){}
 
@@ -71,7 +72,11 @@ export class PostsService{
             console.log(post);
             this.posts.push(post);
             this.postUpdated.next([...this.posts]);
-        });
+        },
+            error=>{
+                this.postUpdated.next([false]);
+            }
+        );
 
     }
 
@@ -85,6 +90,7 @@ export class PostsService{
         console.log(data);
         let userData: Post | FormData
         if(typeof(data.image==='object')){
+            console.log('object')
             userData = new FormData();
             userData.append("id", id);
             userData.append("firstName", data.firstName);
@@ -94,8 +100,9 @@ export class PostsService{
             userData.append("image", data.image);
         }
         else{
+            console.log('no object')
             userData= {
-                id: null, 
+                id: id, 
                 firstName: data.firstName, 
                 lastName: data.lastName, 
                 email: data.email, 
@@ -103,7 +110,7 @@ export class PostsService{
                 imagePath: data.image
             }        
         }
-
+        console.log(userData);
         // const post: Post= {
         //     id: id,
         //     firstName: data?.firstName,

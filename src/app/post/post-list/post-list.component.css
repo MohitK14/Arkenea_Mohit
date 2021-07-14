@@ -28,3 +28,9 @@
 .post-image img{
     width: 30%;
 }
+
+mat-spinner{
+    margin: 0px auto;
+    width: 200px;
+    stroke: blue
+}

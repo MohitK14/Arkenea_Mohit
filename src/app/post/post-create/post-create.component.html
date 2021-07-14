@@ -1,6 +1,7 @@
 
 
-<form class="form-group" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<form class="form-group" [formGroup]="postForm" (ngSubmit)="onSubmit()"  *ngIf="!isLoading">
     <div class="form-control"><input type="text" placeholder="firstName*" formControlName="firstName">
         <div [hidden]="postForm.get('firstName').untouched">
             <span class="error-msg" *ngIf="postForm.get('firstName').errors?.required">

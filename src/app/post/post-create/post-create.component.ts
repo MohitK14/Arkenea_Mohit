@@ -26,6 +26,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   imagePreview;
   emailCheckStatus: Subscription;
   emailError= false;
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, 
               private postService: PostsService, 
@@ -45,8 +46,10 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       if(paramMap.has('userId')){
         this.mode= "edit";
         this.userId= paramMap.get('userId');
+        this.isLoading= true;
         this.postService.getUserWithId(this.userId).subscribe(data=>{
           console.log(data);
+          this.isLoading= false;
           this.userData(data);
         });
       }

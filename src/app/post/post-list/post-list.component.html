@@ -1,5 +1,6 @@
 
-<div class="list-data" *ngIf="postData.length>0">
+<mat-spinner color="accent" *ngIf="isLoading"></mat-spinner>
+<div class="list-data" *ngIf="postData.length>0 && !isLoading">
     <div>List of users</div>
     <div class="list" *ngFor="let item of postData">
         <p>Name: {{item.firstName}}  {{item.lastName}}</p>

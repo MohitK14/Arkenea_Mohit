@@ -1,4 +1,13 @@
+
+.header{
+    background: purple;
+    padding: 10px;
+    color: #fff;
+    margin: -10px -8px;
+}
+
 .header-top{
     margin: 10px;
     cursor: pointer;
+    font-family: sans-serif;
 }

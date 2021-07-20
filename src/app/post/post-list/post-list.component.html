@@ -1,5 +1,5 @@
 
-<mat-spinner color="accent" *ngIf="isLoading"></mat-spinner>
+<mat-spinner class="spinner" color="accent" *ngIf="isLoading"></mat-spinner>
 <div class="list-data" *ngIf="postData.length>0 && !isLoading">
     <div>List of users</div>
     <div class="list" *ngFor="let item of postData">
@@ -10,8 +10,11 @@
             <img  [src]="item.imagePath">
         </div>
         <div class="crud-button">
-            <button [routerLink]="['/edit', item.id]">EDIT</button>
-            <button (click)="onDelete(item.id)">DELETE</button>
+            <button class="pointer" type="submit"  [routerLink]="['/edit', item.id]" mat-raised-button color="primary">EDIT</button>
+            
+            <button class="pointer" type="submit" mat-raised-button  (click)="onDelete(item.id)" 
+            color="accent">DELETE</button>
+            <!-- <button (click)="openDialog(item.id)">DELETE</button> -->
         </div>
     </div>
 

@@ -71,7 +71,7 @@
             <span class="error-msg" *ngIf="showError">
                 Please enter appropriate detail
             </span>
-            <span class="error-msg" *ngIf="emailError">
+            <span class="error-msg" *ngIf="emailError && mode=='create'">
                 Email already exist
             </span>
             <div class="form-control">

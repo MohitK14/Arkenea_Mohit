@@ -121,9 +121,12 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     this.postService.getPostsUpdateListener().subscribe(data=>{
       //console.log(data);
     })
+    setTimeout(()=>{
+      this.router.navigate(["/users-list"]);
+      this.postForm.reset();
+    },1000)
     
-    this.router.navigate(["/users-list"]);
-    this.postForm.reset();
+    
   }
 
   ngOnDestroy(){

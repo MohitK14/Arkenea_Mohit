@@ -41,7 +41,11 @@ router.post('/api/createUser', multer({storage: storage}).single("image") , asyn
 
     const result= await post.save();
 
-    if(result){
+    if(!result){
+        return res.status(500).send({
+            message:"User with email id already exist"
+        });
+        }
         res.status(200).json({
             message: "Post added with success",
             post:{
@@ -49,12 +53,6 @@ router.post('/api/createUser', multer({storage: storage}).single("image") , asyn
                 postId: result._id
             }
         })
-    }
-    else{
-        res.status(500).json({
-            message:"User with email id already exist"
-        })
-    }
 
 });
 
@@ -106,7 +104,7 @@ router.put('/api/user/:id', multer({storage: storage}).single("image") , async(r
 
     res.status(200).json({
         message: "Success",
-        result: result
+        ...result
     })
 })
 

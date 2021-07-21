@@ -27,6 +27,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   emailCheckStatus: Subscription;
   emailError= false;
   isLoading = false;
+  userList;
+  postDataSubscription: Subscription
 
   constructor(private formBuilder: FormBuilder, 
               private postService: PostsService, 
@@ -60,12 +62,16 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     })
 
     this.emailCheckStatus= this.postService.getPostsUpdateListener().subscribe(data=>{
-      
       if(data){
-        console.log(data);
-        this.emailError= true;
+        this.userList= data
+      
       }
-    })
+    });
+    this.userListData();
+  }
+
+  userListData(){
+    this.userList= this.postService.getUsers();
   }
 
   userData(data){
@@ -79,7 +85,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   }
 
   imageEvent(event){
-    console.log(event);
     const file= (event.target as HTMLInputElement).files[0];
     this.postForm.patchValue({image: file});
     this.postForm.get('email').updateValueAndValidity();
@@ -89,7 +94,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       this.imagePreview= reader.result
     }
     reader.readAsDataURL(file);
-    console.log(this.postForm);
   }
 
   onSubmit(){
@@ -109,27 +113,34 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
     }
     if(this.mode=="create"){
-      console.log(this.mode);
-      this.postService.addUser(tempData.firstName, tempData.lastName, tempData.email, tempData.phone, tempData.image);
+      let uniqueEmail= this.userList.find(x=> x.email==tempData.email);
+
+      if(!uniqueEmail){
+        this.postService.addUser(tempData.firstName, tempData.lastName, tempData.email, tempData.phone, tempData.image);
+        this.navigateData();
+      }
+      else{
+        this.emailError= true;
+      }
+      
     }
     else{
-      console.log(this.mode);
       
       this.postService.updateUser(tempData, this.userId);
+      this.navigateData();
     }
     
-    this.postService.getPostsUpdateListener().subscribe(data=>{
-      //console.log(data);
-    })
+  }
+
+  navigateData(){
     setTimeout(()=>{
       this.router.navigate(["/users-list"]);
       this.postForm.reset();
     },1000)
-    
-    
   }
 
   ngOnDestroy(){
     this.emailCheckStatus.unsubscribe();
+    //this.postDataSubscription.unsubscribe();
   }
 }
